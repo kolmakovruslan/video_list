@@ -1,9 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:video_list_with_autoplay/models/video.dart';
+import 'package:video_list_with_autoplay/presentation/video_widget.dart';
 
 class VideoList extends StatelessWidget {
-  final List<Object> items;
+  final List<Video> items;
   final int nowPlayingIndex;
   final Function(int) onVideoSelected;
 
@@ -17,15 +19,13 @@ class VideoList extends StatelessWidget {
   Widget build(BuildContext context) => NotificationListener(
         child: ListView.builder(
           itemBuilder: (ctx, pos) => MetaData(
+            key: ValueKey("$pos"),
             behavior: HitTestBehavior.translucent,
             metaData: pos,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: 420,
-              color: nowPlayingIndex == pos ? Colors.green : Colors.yellow,
-              child: Center(
-                child: Text(pos.toString()),
-              ),
+            child: VideoWidget(
+              ValueKey("$pos${pos == nowPlayingIndex}"),
+              items[pos].url,
+              pos == nowPlayingIndex,
             ),
           ),
           itemCount: items.length,

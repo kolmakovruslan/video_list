@@ -8,10 +8,14 @@ final reducerBuilder = ReducerBuilder<AppState, AppStateBuilder>()
   ..add(AppActionsNames.selectVideoAction, _selectVideo);
 
 void _fetchVideo(AppState state, Action<Null> action, AppStateBuilder builder) {
-  builder.videos =
-      List.generate(30, (pos) => Video.fromUrl("https://video/$pos"));
+  final url =
+      "https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4";
+  builder
+    ..videos = List.generate(30, (pos) => Video.fromUrl(url))
+    ..nowPlayingIndex = 0;
 }
 
 void _selectVideo(AppState state, Action<int> action, AppStateBuilder builder) {
+  print("_selectVideo ${action.payload}");
   builder.nowPlayingIndex = action.payload;
 }

@@ -13,6 +13,7 @@ dependencies:
   built_value: 6.7.0
   built_redux: 7.5.4
   flutter_built_redux: 0.6.0
+  video_player: 0.10.1+4
 
 dev_dependencies:
   flutter_test:
