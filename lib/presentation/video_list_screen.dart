@@ -16,6 +16,9 @@ class VideoListPage extends StoreConnector<AppState, AppActions, AppState> {
         state.videos,
         nowPlayingIndex: state.nowPlayingIndex,
         onVideoSelected: (index) => actions.selectVideoAction(index),
+        audioIsOn: state.soundIsOn,
+        toggleAudio: () => actions.toggleAudioAction(),
+        onVideoInit: (controller) => actions.playerInitAction(controller),
       ),
     );
   }

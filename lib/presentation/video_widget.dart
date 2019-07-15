@@ -5,25 +5,28 @@ import 'package:video_player/video_player.dart';
 class VideoWidget extends StatefulWidget {
   final String _url;
   final bool _autoPlay;
+  final Function _onVideoInit;
 
-  VideoWidget(Key key, this._url, this._autoPlay) : super(key: key);
+  VideoWidget(Key key, this._url, this._autoPlay, this._onVideoInit) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _VideoWidgetState(_url, _autoPlay);
+  State<StatefulWidget> createState() => _VideoWidgetState(_url, _autoPlay, _onVideoInit);
 }
 
 class _VideoWidgetState extends State<VideoWidget> {
   VideoPlayerController _controller;
   final String _url;
   final bool _autoPlay;
+  final Function _onVideoInit;
 
-  _VideoWidgetState(this._url, this._autoPlay);
+  _VideoWidgetState(this._url, this._autoPlay, this._onVideoInit);
 
   @override
   void initState() {
     super.initState();
     _controller = VideoPlayerController.network(_url)
       ..initialize().then((_) {
+        _onVideoInit(_controller);
         setState(() {
           if (_autoPlay) _controller.play();
         });
@@ -45,6 +48,7 @@ class _VideoWidgetState extends State<VideoWidget> {
           child: !_controller.value.initialized
               ? CircularProgressIndicator()
               : FittedBox(
+                  key: ValueKey(_url),
                   fit: BoxFit.fitHeight,
                   child: Container(
                     width: _controller.value.size.width,

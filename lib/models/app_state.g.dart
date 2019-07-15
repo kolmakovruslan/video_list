@@ -11,11 +11,21 @@ class _$AppState extends AppState {
   final int nowPlayingIndex;
   @override
   final List<Video> videos;
+  @override
+  final bool soundIsOn;
+  @override
+  final VideoPlayerController controller;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.nowPlayingIndex, this.videos}) : super._();
+  _$AppState._(
+      {this.nowPlayingIndex, this.videos, this.soundIsOn, this.controller})
+      : super._() {
+    if (soundIsOn == null) {
+      throw new BuiltValueNullFieldError('AppState', 'soundIsOn');
+    }
+  }
 
   @override
   AppState rebuild(void Function(AppStateBuilder) updates) =>
@@ -29,19 +39,26 @@ class _$AppState extends AppState {
     if (identical(other, this)) return true;
     return other is AppState &&
         nowPlayingIndex == other.nowPlayingIndex &&
-        videos == other.videos;
+        videos == other.videos &&
+        soundIsOn == other.soundIsOn &&
+        controller == other.controller;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, nowPlayingIndex.hashCode), videos.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, nowPlayingIndex.hashCode), videos.hashCode),
+            soundIsOn.hashCode),
+        controller.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
           ..add('nowPlayingIndex', nowPlayingIndex)
-          ..add('videos', videos))
+          ..add('videos', videos)
+          ..add('soundIsOn', soundIsOn)
+          ..add('controller', controller))
         .toString();
   }
 }
@@ -58,12 +75,23 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   List<Video> get videos => _$this._videos;
   set videos(List<Video> videos) => _$this._videos = videos;
 
+  bool _soundIsOn;
+  bool get soundIsOn => _$this._soundIsOn;
+  set soundIsOn(bool soundIsOn) => _$this._soundIsOn = soundIsOn;
+
+  VideoPlayerController _controller;
+  VideoPlayerController get controller => _$this._controller;
+  set controller(VideoPlayerController controller) =>
+      _$this._controller = controller;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
       _nowPlayingIndex = _$v.nowPlayingIndex;
       _videos = _$v.videos;
+      _soundIsOn = _$v.soundIsOn;
+      _controller = _$v.controller;
       _$v = null;
     }
     return this;
@@ -85,7 +113,11 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   @override
   _$AppState build() {
     final _$result = _$v ??
-        new _$AppState._(nowPlayingIndex: nowPlayingIndex, videos: videos);
+        new _$AppState._(
+            nowPlayingIndex: nowPlayingIndex,
+            videos: videos,
+            soundIsOn: soundIsOn,
+            controller: controller);
     replace(_$result);
     return _$result;
   }

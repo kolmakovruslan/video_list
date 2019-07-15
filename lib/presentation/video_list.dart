@@ -8,11 +8,17 @@ class VideoList extends StatelessWidget {
   final List<Video> items;
   final int nowPlayingIndex;
   final Function(int) onVideoSelected;
+  final bool audioIsOn;
+  final Function toggleAudio;
+  final Function onVideoInit;
 
   VideoList(
     this.items, {
     this.nowPlayingIndex,
     this.onVideoSelected,
+    this.audioIsOn,
+    this.toggleAudio,
+    this.onVideoInit,
   });
 
   @override
@@ -22,10 +28,28 @@ class VideoList extends StatelessWidget {
             key: ValueKey("$pos"),
             behavior: HitTestBehavior.translucent,
             metaData: pos,
-            child: VideoWidget(
-              ValueKey("$pos${pos == nowPlayingIndex}"),
-              items[pos].url,
-              pos == nowPlayingIndex,
+            child: Stack(
+              children: <Widget>[
+                VideoWidget(
+                  ValueKey("$pos${pos == nowPlayingIndex}"),
+                  items[pos].url,
+                  pos == nowPlayingIndex,
+                  onVideoInit,
+                ),
+                Positioned(
+                  key: ValueKey("$audioIsOn"),
+                  bottom: 16,
+                  right: 16,
+                  child: IconButton(
+                    padding: EdgeInsets.all(8),
+                    icon: Icon(
+                      audioIsOn ? Icons.volume_up : Icons.volume_mute,
+                      color: Colors.white,
+                    ),
+                    onPressed: toggleAudio,
+                  ),
+                )
+              ],
             ),
           ),
           itemCount: items.length,
